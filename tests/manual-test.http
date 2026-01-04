@@ -1,0 +1,67 @@
+### Welcome endpoint
+GET http://localhost:3000/
+
+### Input harga pertama (baseline)
+POST http://localhost:3000/api/price
+Content-Type: application/json
+
+{
+  "price": 1000
+}
+
+### Input harga turun → BUY signal
+POST http://localhost:3000/api/price
+Content-Type: application/json
+
+{
+  "price": 950
+}
+
+### Input harga naik → SELL signal
+POST http://localhost:3000/api/price
+Content-Type: application/json
+
+{
+  "price": 1050
+}
+
+### Input harga sama → HOLD
+POST http://localhost:3000/api/price
+Content-Type: application/json
+
+{
+  "price": 1050
+}
+
+### Get current state
+GET http://localhost:3000/api/state
+
+### Get transaction logs
+GET http://localhost:3000/api/logs
+
+### Reset bot
+POST http://localhost:3000/api/reset
+```
+
+---
+
+## 🧠 Penjelasan Business Logic
+
+### Flow Keputusan Trading
+```
+Input Harga Baru
+       ↓
+Bandingkan dengan Harga Terakhir
+       ↓
+    ┌──────┴──────┐
+    ↓             ↓
+Harga Turun?   Harga Naik?
+    ↓             ↓
+  BUY 📉        SELL 📈
+    ↓             ↓
+Kurangi Saldo  Tambah Saldo
+Tambah Holdings Kurangi Holdings
+       ↓
+  Update State
+       ↓
+  Return Response
